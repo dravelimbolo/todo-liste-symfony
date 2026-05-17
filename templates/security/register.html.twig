@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inscription - Todo Liste Productive{% endblock %}
+
+{% block body %}
+<div class="bg-surface min-h-screen flex flex-col items-center">
+
+    <header class="w-full top-0 sticky bg-surface flex items-center justify-center h-16 border-b border-outline-variant z-40">
+        <h1 class="text-display-title text-primary">Todo Liste Productive</h1>
+    </header>
+
+    <main class="w-full max-w-md px-safe-margin py-xl flex-grow">
+
+        <div class="mb-xl text-center">
+            <h2 class="text-display-title text-on-surface mb-base">Rejoignez-nous</h2>
+            <p class="text-body-main text-on-surface-variant">Créez votre espace de travail personnel ou d'équipe.</p>
+        </div>
+
+        {{ form_start(registrationForm, {attr: {class: 'flex flex-col gap-md', novalidate: true}}) }}
+
+            {# ── Sélecteur visuel du type de profil ────────────────── #}
+            <div class="flex gap-sm mb-sm">
+                <button type="button" id="card-SOLO" onclick="selectProfileType('SOLO')"
+                        class="flex-1 p-md rounded-xl border-2 transition-all text-left border-primary bg-primary-fixed ring-2 ring-primary/20">
+                    <span class="material-symbols-outlined text-primary mb-xs" style="font-size:24px">person</span>
+                    <h3 class="text-subtitle block">Solo</h3>
+                    <p class="text-helper-text text-on-surface-variant mt-base">Usage individuel et personnel.</p>
+                </button>
+                <button type="button" id="card-TEAM_LEAD" onclick="selectProfileType('TEAM_LEAD')"
+                        class="flex-1 p-md rounded-xl border-2 transition-all text-left border-outline-variant bg-surface-container-lowest">
+                    <span class="material-symbols-outlined text-primary mb-xs" style="font-size:24px">group</span>
+                    <h3 class="text-subtitle block">Team Lead</h3>
+                    <p class="text-helper-text text-on-surface-variant mt-base">Gérez votre équipe et vos projets.</p>
+                </button>
+            </div>
+            {# Champ select caché, synchronisé par JS #}
+            <div class="hidden">{{ form_widget(registrationForm.profileType) }}</div>
+
+            {# ── Prénom & Nom ───────────────────────────────────────── #}
+            <div class="grid grid-cols-2 gap-sm">
+                <div class="flex flex-col gap-base">
+                    {{ form_label(registrationForm.firstName, null, {label_attr: {class: 'text-label-caps text-on-surface-variant px-base'}}) }}
+                    {{ form_widget(registrationForm.firstName, {attr: {class: 'w-full h-12 px-md rounded-lg border border-outline-variant bg-surface-container-low text-body-main focus:border-primary focus:ring-1 focus:ring-primary transition-colors', placeholder: 'Jean'}}) }}
+                    {{ form_errors(registrationForm.firstName) }}
+                </div>
+                <div class="flex flex-col gap-base">
+                    {{ form_label(registrationForm.lastName, null, {label_attr: {class: 'text-label-caps text-on-surface-variant px-base'}}) }}
+                    {{ form_widget(registrationForm.lastName, {attr: {class: 'w-full h-12 px-md rounded-lg border border-outline-variant bg-surface-container-low text-body-main focus:border-primary focus:ring-1 focus:ring-primary transition-colors', placeholder: 'Dupont'}}) }}
+                    {{ form_errors(registrationForm.lastName) }}
+                </div>
+            </div>
+
+            {# ── Email ──────────────────────────────────────────────── #}
+            <div class="flex flex-col gap-base">
+                {{ form_label(registrationForm.email, null, {label_attr: {class: 'text-label-caps text-on-surface-variant px-base'}}) }}
+                {{ form_widget(registrationForm.email, {attr: {class: 'w-full h-12 px-md rounded-lg border border-outline-variant bg-surface-container-low text-body-main focus:border-primary focus:ring-1 focus:ring-primary transition-colors', placeholder: 'nom@exemple.com'}}) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            {# ── Mot de passe ───────────────────────────────────────── #}
+            <div class="flex flex-col gap-base">
+                {{ form_label(registrationForm.plainPassword, null, {label_attr: {class: 'text-label-caps text-on-surface-variant px-base'}}) }}
+                {{ form_widget(registrationForm.plainPassword, {attr: {class: 'w-full h-12 px-md rounded-lg border border-outline-variant bg-surface-container-low text-body-main focus:border-primary focus:ring-1 focus:ring-primary transition-colors', placeholder: '••••••••'}}) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            {# ── CGU ────────────────────────────────────────────────── #}
+            <div class="flex items-start gap-xs mt-xs px-base">
+                {{ form_widget(registrationForm.agreeTerms, {attr: {class: 'mt-1 w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary'}}) }}
+                <p class="text-helper-text text-on-surface-variant">J'accepte les conditions d'utilisation et la politique de confidentialité.</p>
+            </div>
+            {{ form_errors(registrationForm.agreeTerms) }}
+
+            <button type="submit"
+                    class="w-full h-12 mt-md bg-primary text-on-primary rounded-full text-subtitle hover:brightness-110 active:scale-[0.98] transition-all shadow-sm flex items-center justify-center gap-xs">
+                Créer mon compte
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+
+        {{ form_end(registrationForm) }}
+
+        <div class="text-center mt-lg">
+            <a href="{{ path('app_login') }}" class="text-body-main text-primary font-bold hover:underline">
+                Retour à la connexion
+            </a>
+        </div>
+    </main>
+
+    <footer class="w-full py-md text-center">
+        <p class="text-helper-text text-outline">© {{ "now"|date("Y") }} Todo Liste Productive.</p>
+    </footer>
+</div>
+
+<script>
+function selectProfileType(type) {
+    ['SOLO', 'TEAM_LEAD'].forEach(t => {
+        const card = document.getElementById('card-' + t);
+        if (t === type) {
+            card.classList.replace('border-outline-variant', 'border-primary');
+            card.classList.replace('bg-surface-container-lowest', 'bg-primary-fixed');
+            card.classList.add('ring-2', 'ring-primary/20');
+        } else {
+            card.classList.replace('border-primary', 'border-outline-variant');
+            card.classList.replace('bg-primary-fixed', 'bg-surface-container-lowest');
+            card.classList.remove('ring-2', 'ring-primary/20');
+        }
+    });
+    const select = document.querySelector('select[id$="_profileType"]');
+    if (select) {
+        [...select.options].forEach(opt => { opt.selected = (opt.value === type); });
+    }
+}
+</script>
+{% endblock %}
