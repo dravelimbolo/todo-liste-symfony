@@ -30,6 +30,7 @@
         "symfony/process": "8.0.*",
         "symfony/property-access": "8.0.*",
         "symfony/property-info": "8.0.*",
+        "symfony/rate-limiter": "8.0.*",
         "symfony/runtime": "8.0.*",
         "symfony/security-bundle": "8.0.*",
         "symfony/serializer": "8.0.*",
@@ -37,16 +38,18 @@
         "symfony/string": "8.0.*",
         "symfony/translation": "8.0.*",
         "symfony/twig-bundle": "8.0.*",
+        "symfony/uid": "8.0.*",
         "symfony/ux-turbo": "^3.0",
         "symfony/validator": "8.0.*",
         "symfony/web-link": "8.0.*",
         "symfony/yaml": "8.0.*",
-        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/extra-bundle": "^3.24",
         "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -93,17 +96,24 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "8.0.*"
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^13.1",
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",
         "symfony/debug-bundle": "8.0.*",
-        "symfony/maker-bundle": "^1.0",
+        "symfony/maker-bundle": "^1.67",
         "symfony/stopwatch": "8.0.*",
-        "symfony/web-profiler-bundle": "8.0.*"
+        "symfony/web-profiler-bundle": "8.0.*",
+        "zenstruck/foundry": "^2.9"
     }
 }
