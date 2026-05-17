@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connexion - Todo Liste Productive{% endblock %}
+
+{% block body %}
+<div class="bg-surface min-h-screen flex items-center justify-center p-md">
+
+    <div class="w-full max-w-md bg-surface-container-lowest p-xl rounded-xl shadow-[0px_2px_8px_rgba(0,0,0,0.08)] border border-outline-variant">
+
+        <div class="flex flex-col items-center mb-xl">
+            <div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center mb-md shadow-sm">
+                <span class="material-symbols-outlined text-on-primary-container text-3xl"
+                      style="font-variation-settings:'FILL' 1;">checklist</span>
+            </div>
+            <h1 class="text-display-title text-primary">Todo Liste Productive</h1>
+        </div>
+
+        {% if error %}
+            <div class="mb-md p-sm bg-error-container text-error rounded-lg text-sm font-medium">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        <form method="post" class="space-y-lg">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="flex flex-col space-y-base">
+                <label class="text-label-caps text-on-surface-variant" for="email">Email</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline" id="icon-email">mail</span>
+                    <input id="email" type="email" name="email" value="{{ last_username }}"
+                           class="w-full h-12 pl-11 pr-md bg-surface-container-low border border-outline-variant rounded-lg text-body-main
+                                  focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                           placeholder="nom@exemple.com" required autofocus autocomplete="email">
+                </div>
+            </div>
+
+            <div class="flex flex-col space-y-base">
+                <div class="flex justify-between items-center">
+                    <label class="text-label-caps text-on-surface-variant" for="password">Mot de passe</label>
+                    <a href="#" class="text-helper-text text-primary hover:underline">Mot de passe oublié ?</a>
+                </div>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline" id="icon-password">lock</span>
+                    <input id="password" type="password" name="password"
+                           class="w-full h-12 pl-11 pr-md bg-surface-container-low border border-outline-variant rounded-lg text-body-main
+                                  focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                           placeholder="••••••••" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <label class="flex items-center gap-xs cursor-pointer">
+                <input type="checkbox" name="_remember_me"
+                       class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary">
+                <span class="text-body-main text-on-surface-variant">Se souvenir de moi</span>
+            </label>
+
+            <button type="submit"
+                    class="w-full h-12 bg-primary text-on-primary text-subtitle rounded-lg hover:brightness-110 active:scale-[0.98] transition-all shadow-sm">
+                Se connecter
+            </button>
+        </form>
+
+        <div class="mt-xl text-center">
+            <p class="text-body-main text-on-surface-variant">
+                Pas encore de compte ?
+                <a href="{{ path('app_register') }}" class="text-primary font-bold hover:underline">S'inscrire</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-20">
+        <div class="absolute -top-1/4 -right-1/4 w-[500px] h-[500px] rounded-full bg-primary-fixed blur-[100px]"></div>
+        <div class="absolute -bottom-1/4 -left-1/4 w-[500px] h-[500px] rounded-full bg-secondary-container blur-[100px]"></div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('input[type=email], input[type=password]').forEach(input => {
+    const iconId = input.id === 'email' ? 'icon-email' : 'icon-password';
+    const icon   = document.getElementById(iconId);
+    input.addEventListener('focus', () => icon && (icon.style.color = '#0f5238'));
+    input.addEventListener('blur',  () => icon && (icon.style.color = '#707973'));
+});
+</script>
+{% endblock %}
