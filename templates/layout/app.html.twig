@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# ── Top App Bar ─────────────────────────────────────────────── #}
+<header class="bg-surface w-full top-0 sticky z-50 border-b border-outline-variant h-16 flex items-center justify-between px-safe-margin">
+    <div class="flex items-center gap-4">
+        <button class="text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-colors">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <a href="{{ path('app_dashboard') }}" class="text-display-title text-primary">
+            Todo Liste Productive
+        </a>
+    </div>
+    <a href="{{ path('app_profile') }}"
+       class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold hover:ring-2 hover:ring-primary transition-all"
+       title="{{ app.user.fullName }}">
+        {{ app.user.initials }}
+    </a>
+</header>
+
+{# ── Flash Messages ───────────────────────────────────────────── #}
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div data-flash-dismiss
+             class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] px-lg py-sm rounded-xl shadow-lg text-sm font-semibold transition-opacity duration-300
+                    {% if type == 'success' %}bg-primary text-on-primary
+                    {% elseif type == 'error' %}bg-error text-on-error
+                    {% else %}bg-surface-container-high text-on-surface{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+{# ── Main Content ─────────────────────────────────────────────── #}
+<main class="pb-24">
+    {% block main %}{% endblock %}
+</main>
+
+{# ── Bottom Navigation ────────────────────────────────────────── #}
+{% set route = app.request.attributes.get('_route') %}
+<nav class="fixed bottom-0 w-full z-50 h-16 bg-surface border-t border-outline-variant shadow-sm flex justify-around items-center px-4">
+
+    <a href="{{ path('app_dashboard') }}"
+       class="flex flex-col items-center justify-center p-xs rounded-lg transition-all
+              {{ route == 'app_dashboard' ? 'text-primary' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <span class="material-symbols-outlined"
+              {% if route == 'app_dashboard' %}style="font-variation-settings:'FILL' 1"{% endif %}>dashboard</span>
+        <span class="text-label-caps">Dashboard</span>
+    </a>
+
+    <a href="{{ path('app_task_index') }}"
+       class="flex flex-col items-center justify-center p-xs rounded-lg transition-all
+              {{ 'app_task' in route ? 'text-primary' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <span class="material-symbols-outlined"
+              {% if 'app_task' in route %}style="font-variation-settings:'FILL' 1"{% endif %}>checklist</span>
+        <span class="text-label-caps">Tâches</span>
+    </a>
+
+    <a href="{{ path('app_profile') }}"
+       class="flex flex-col items-center justify-center p-xs rounded-lg transition-all
+              {{ 'app_profile' in route ? 'text-primary' : 'text-on-surface-variant hover:bg-surface-container-low' }}">
+        <span class="material-symbols-outlined"
+              {% if 'app_profile' in route %}style="font-variation-settings:'FILL' 1"{% endif %}>person</span>
+        <span class="text-label-caps">Profil</span>
+    </a>
+
+</nav>
+
+{% endblock %}
