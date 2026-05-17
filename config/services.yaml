@@ -1,3 +1,4 @@
+# config/services.yaml
 parameters:
     upload_dir: '%kernel.project_dir%/public/uploads/attachments'
     upload_public_path: 'uploads/attachments'
@@ -6,9 +7,9 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        bind:
-            string $uploadDir: '%upload_dir%'
-            string $uploadPublicPath: '%upload_public_path%'
+        # bind:                          ← commenter pour l'instant
+        #     string $uploadDir: '%upload_dir%'
+        #     string $uploadPublicPath: '%upload_public_path%'
 
     App\:
         resource: '../src/'
