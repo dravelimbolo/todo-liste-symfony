@@ -7,9 +7,9 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        # bind:                          ← commenter pour l'instant
-        #     string $uploadDir: '%upload_dir%'
-        #     string $uploadPublicPath: '%upload_public_path%'
+        bind:
+            string $uploadDir: '%upload_dir%'
+            string $uploadPublicPath: '%upload_public_path%'
 
     App\:
         resource: '../src/'

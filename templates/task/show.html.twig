@@ -1,0 +1,95 @@
+{% extends 'layout/app.html.twig' %}
+{% block title %}{{ task.title }} - Todo Liste Productive{% endblock %}
+
+{% block main %}
+<div class="max-w-2xl mx-auto px-safe-margin py-md space-y-lg">
+
+    {# Badges priorité + statut #}
+    <section class="space-y-sm">
+        <div class="flex flex-wrap gap-xs items-center">
+            <span class="px-md py-1 rounded-full text-label-caps {{ task.priority.badgeClasses() }}">
+                {{ task.priority.label()|upper }}
+            </span>
+            <span class="px-md py-1 rounded-full text-label-caps {{ task.status.badgeClasses() }}">
+                {{ task.status.label() }}
+            </span>
+        </div>
+        <h2 class="text-[28px] leading-tight font-bold text-on-surface tracking-tight">{{ task.title }}</h2>
+        {% if task.dueDate %}
+            <div class="flex items-center text-on-surface-variant gap-xs">
+                <span class="material-symbols-outlined" style="font-size:18px">calendar_today</span>
+                <span class="text-body-main">Échéance : {{ task.dueDate|date('d F Y') }}</span>
+            </div>
+        {% endif %}
+    </section>
+
+    {# Description #}
+    {% if task.description %}
+        <section class="space-y-xs">
+            <h3 class="text-subtitle text-primary">Description</h3>
+            <p class="text-body-main text-on-surface-variant leading-relaxed">{{ task.description }}</p>
+        </section>
+    {% endif %}
+
+    {# Assigné à #}
+    {% if task.assignedTo %}
+        <section class="flex items-center justify-between p-md bg-surface-container-low rounded-xl elevation-1">
+            <div class="flex items-center gap-md">
+                <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold border-2 border-primary-fixed">
+                    {{ task.assignedTo.initials }}
+                </div>
+                <div>
+                    <p class="text-label-caps text-on-surface-variant uppercase tracking-wider">Assigné à</p>
+                    <p class="text-subtitle text-on-surface">{{ task.assignedTo.fullName }}</p>
+                </div>
+            </div>
+            <a href="mailto:{{ task.assignedTo.email }}" class="hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-outline">mail</span>
+            </a>
+        </section>
+    {% endif %}
+
+    {# Pièces jointes #}
+    {% if task.attachments is not empty %}
+        <section class="space-y-sm">
+            <h3 class="text-subtitle text-primary">📎 {{ task.attachments|length }} pièce(s) jointe(s)</h3>
+            <div class="grid grid-cols-2 gap-sm">
+                {% for attachment in task.attachments %}
+                    <div class="aspect-video rounded-xl overflow-hidden elevation-1 group relative">
+                        <img src="{{ asset('uploads/attachments/' ~ attachment.filename) }}"
+                             alt="{{ attachment.originalName }}"
+                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white">zoom_in</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+    {# Actions #}
+    {% if is_granted('task.edit', task) %}
+        <section class="flex flex-col gap-sm pt-lg">
+            <a href="{{ path('app_task_edit', {id: task.id}) }}"
+               class="w-full h-12 bg-primary text-on-primary rounded-xl text-subtitle flex items-center justify-center gap-xs shadow-sm active:scale-95 transition-all">
+                <span class="material-symbols-outlined">edit</span>
+                Modifier
+            </a>
+
+            {% if is_granted('task.delete', task) %}
+                <form method="post" action="{{ path('app_task_delete', {id: task.id}) }}"
+                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}">
+                    <button type="submit"
+                            class="w-full h-12 border border-outline-variant text-error rounded-xl text-subtitle flex items-center justify-center gap-xs hover:bg-error-container active:scale-95 transition-all">
+                        <span class="material-symbols-outlined">delete</span>
+                        Supprimer
+                    </button>
+                </form>
+            {% endif %}
+        </section>
+    {% endif %}
+
+</div>
+{% endblock %}
