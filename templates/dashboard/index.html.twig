@@ -1,0 +1,124 @@
+{% extends 'layout/app.html.twig' %}
+{% block title %}Dashboard - Todo Liste Productive{% endblock %}
+
+{% block main %}
+<div class="max-w-md mx-auto px-safe-margin pt-lg space-y-lg">
+
+    {# ── Greeting ─────────────────────────────────────────── #}
+    <section class="space-y-base">
+        <div class="flex items-center justify-between">
+            <h2 class="text-[28px] leading-tight font-bold text-on-surface">
+                Bonjour, {{ user.firstName }} 👋
+            </h2>
+            <span class="bg-secondary-container text-on-secondary-container text-label-caps px-3 py-1 rounded-full">
+                {{ user.profileType.label() }}
+            </span>
+        </div>
+        <p class="text-body-main text-on-surface-variant">{{ "now"|date("l d F Y") }}</p>
+    </section>
+
+    {# ── Bento Grid Stats ──────────────────────────────────── #}
+    <section class="grid grid-cols-2 gap-md">
+        <div class="bg-surface-container-low p-md rounded-xl border border-outline-variant elevation-1 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined text-primary mb-xs">today</span>
+            <p class="text-label-caps text-on-surface-variant">Tâches créées</p>
+            <p class="text-3xl font-bold text-primary mt-xs">{{ stats.totalCreated }}</p>
+        </div>
+        <div class="bg-surface-container-low p-md rounded-xl border border-outline-variant elevation-1 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined text-secondary mb-xs">pending</span>
+            <p class="text-label-caps text-on-surface-variant">En cours</p>
+            <p class="text-3xl font-bold text-secondary mt-xs">{{ stats.byStatus['IN_PROGRESS'] ?? 0 }}</p>
+        </div>
+        <div class="col-span-2 bg-primary text-on-primary p-md rounded-xl border border-primary elevation-1 hover:scale-[1.01] transition-transform">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="material-symbols-outlined text-primary-fixed mb-xs">task_alt</span>
+                    <p class="text-label-caps text-primary-fixed">Terminées</p>
+                    <p class="text-3xl font-bold text-white mt-xs">{{ stats.totalCompleted }}</p>
+                </div>
+                <div class="h-14 w-14 rounded-full border-4 border-primary-container flex items-center justify-center text-sm font-bold text-white">
+                    {{ stats.completionRate }}%
+                </div>
+            </div>
+            <div class="mt-md w-full bg-primary-container h-2 rounded-full overflow-hidden">
+                <div class="bg-primary-fixed h-full rounded-full transition-all duration-1000 ease-out"
+                     style="width: {{ stats.completionRate }}%"></div>
+            </div>
+        </div>
+    </section>
+
+    {# ── Filtres statut ────────────────────────────────────── #}
+    <section class="flex gap-sm overflow-x-auto scrollbar-hide py-xs -mx-safe-margin px-safe-margin">
+        {% for statusValue, count in stats.byStatus %}
+            {% set statusEnum = constant('App\\Enum\\TaskStatus::' ~ statusValue) %}
+            <span class="px-md py-2 rounded-full text-subtitle whitespace-nowrap {{ statusEnum.badgeClasses() }}">
+                {{ statusEnum.label() }} ({{ count }})
+            </span>
+        {% endfor %}
+    </section>
+
+    {# ── Tâches récentes ───────────────────────────────────── #}
+    <section class="space-y-md">
+        <div class="flex justify-between items-center">
+            <h3 class="text-subtitle text-on-surface-variant px-1">Tâches récentes</h3>
+            <a href="{{ path('app_task_index') }}" class="text-label-caps text-primary hover:underline">Voir tout</a>
+        </div>
+
+        {% if stats.recentTasks is empty %}
+            <div class="text-center py-xl text-on-surface-variant">
+                <span class="material-symbols-outlined text-5xl mb-md block opacity-30">checklist</span>
+                <p class="text-subtitle">Aucune tâche</p>
+                <a href="{{ path('app_task_new') }}" class="text-primary font-semibold hover:underline mt-xs inline-block">
+                    Créer ma première tâche →
+                </a>
+            </div>
+        {% else %}
+            {% for task in stats.recentTasks %}
+                <a href="{{ path('app_task_show', {id: task.id}) }}"
+                   class="block bg-surface-container-lowest rounded-xl p-md border border-outline-variant elevation-1 group">
+                    <div class="flex items-start gap-md">
+                        <div class="mt-1 h-6 w-6 rounded-full border-2 border-primary flex items-center justify-center flex-shrink-0
+                                    {{ task.status.value == 'DONE' ? 'bg-primary' : '' }} group-hover:bg-primary-container transition-colors">
+                            {% if task.status.value == 'DONE' %}
+                                <span class="material-symbols-outlined text-white" style="font-size:14px">check</span>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <div class="flex items-center justify-between gap-sm mb-xs">
+                                <span class="text-label-caps {{ task.priority.badgeClasses() }} px-2 py-0.5 rounded-full">
+                                    {{ task.priority.label()|upper }}
+                                </span>
+                                {% if task.dueDate %}
+                                    <span class="text-helper-text text-on-surface-variant flex items-center gap-1">
+                                        <span class="material-symbols-outlined" style="font-size:12px">calendar_today</span>
+                                        {{ task.dueDate|date('d/m/Y') }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <h4 class="text-subtitle text-on-surface group-hover:text-primary transition-colors truncate">
+                                {{ task.title }}
+                            </h4>
+                        </div>
+                    </div>
+                    {% if task.attachments is not empty %}
+                        <div class="flex gap-sm overflow-x-auto scrollbar-hide py-xs pl-10 mt-sm">
+                            {% for attachment in task.attachments|slice(0, 3) %}
+                                <img src="{{ asset('uploads/attachments/' ~ attachment.filename) }}"
+                                     alt="{{ attachment.originalName }}"
+                                     class="h-16 w-24 object-cover rounded-lg flex-shrink-0 border border-outline-variant">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        {% endif %}
+    </section>
+
+</div>
+
+{# ── FAB ──────────────────────────────────────────────────── #}
+<a href="{{ path('app_task_new') }}"
+   class="fixed bottom-[88px] right-md w-14 h-14 bg-secondary-container text-on-secondary-container rounded-2xl shadow-lg flex items-center justify-center hover:scale-105 active:scale-90 transition-transform z-50">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 0,'wght' 600">add</span>
+</a>
+{% endblock %}
