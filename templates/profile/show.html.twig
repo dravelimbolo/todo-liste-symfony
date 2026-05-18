@@ -1,0 +1,100 @@
+{% extends 'layout/app.html.twig' %}
+{% block title %}Profil - Todo Liste Productive{% endblock %}
+
+{% block main %}
+<div class="max-w-md mx-auto px-safe-margin pt-lg space-y-lg pb-10">
+
+    {# Avatar + infos #}
+    <section class="flex flex-col items-center text-center space-y-md">
+        <div class="relative">
+            <div class="w-24 h-24 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-4xl font-extrabold border-4 border-surface-container-high">
+                {{ user.initials }}
+            </div>
+            <a href="{{ path('app_profile_edit') }}"
+               class="absolute bottom-0 right-0 p-1.5 bg-primary text-white rounded-full border-2 border-surface shadow-md hover:brightness-110 transition-all">
+                <span class="material-symbols-outlined" style="font-size:16px">edit</span>
+            </a>
+        </div>
+        <div class="space-y-xs">
+            <h2 class="text-display-title text-on-surface">{{ user.fullName }}</h2>
+            <p class="text-body-main text-on-surface-variant">{{ user.email }}</p>
+            <span class="inline-block px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-caps mt-1">
+                {{ user.profileType.label() }}
+            </span>
+        </div>
+    </section>
+
+    {# Stats bento #}
+    <section class="grid grid-cols-2 gap-sm">
+        <div class="bg-surface-container-lowest p-md rounded-xl elevation-1 flex flex-col items-center justify-center space-y-base">
+            <span class="text-label-caps text-on-surface-variant opacity-70">TÂCHES CRÉÉES</span>
+            <span class="text-2xl font-bold text-primary">{{ stats.totalCreated }}</span>
+        </div>
+        <div class="bg-surface-container-lowest p-md rounded-xl elevation-1 flex flex-col items-center justify-center space-y-base">
+            <span class="text-label-caps text-on-surface-variant opacity-70">TERMINÉES</span>
+            <span class="text-2xl font-bold text-secondary">{{ stats.totalCompleted }}</span>
+        </div>
+        <div class="col-span-2 bg-surface-container-lowest p-md rounded-xl elevation-1 space-y-md">
+            <div class="flex justify-between items-end">
+                <span class="text-subtitle text-on-surface">Taux de complétion</span>
+                <span class="text-2xl font-bold text-primary">{{ stats.completionRate }}%</span>
+            </div>
+            <div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden">
+                <div class="bg-primary h-full rounded-full transition-all duration-1000 ease-out"
+                     style="width: {{ stats.completionRate }}%"></div>
+            </div>
+            <p class="text-helper-text text-on-surface-variant">
+                {% if stats.completionRate >= 80 %}Performances excellentes ! 🚀
+                {% elseif stats.completionRate >= 50 %}Bon rythme, continuez ainsi.
+                {% else %}Il reste du chemin, courage !
+                {% endif %}
+            </p>
+        </div>
+    </section>
+
+    {# Paramètres du compte #}
+    <section class="space-y-sm">
+        <h3 class="text-label-caps text-on-surface-variant px-xs">PARAMÈTRES DU COMPTE</h3>
+        <div class="bg-surface-container-lowest rounded-xl elevation-1 overflow-hidden divide-y divide-outline-variant">
+            <a href="{{ path('app_profile_edit') }}"
+               class="flex items-center justify-between p-md hover:bg-surface-container-low transition-colors">
+                <div class="flex items-center gap-md">
+                    <span class="material-symbols-outlined text-primary">person</span>
+                    <span class="text-body-main text-on-surface">Modifier le profil</span>
+                </div>
+                <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+            </a>
+            <a href="{{ path('app_profile_change_password') }}"
+               class="flex items-center justify-between p-md hover:bg-surface-container-low transition-colors">
+                <div class="flex items-center gap-md">
+                    <span class="material-symbols-outlined text-primary">lock</span>
+                    <span class="text-body-main text-on-surface">Changer le mot de passe</span>
+                </div>
+                <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+            </a>
+            <div class="flex items-center justify-between p-md">
+                <div class="flex items-center gap-md">
+                    <span class="material-symbols-outlined text-primary">badge</span>
+                    <div>
+                        <span class="text-body-main text-on-surface block">Type de profil</span>
+                        <span class="text-helper-text text-on-surface-variant">Actuel : {{ user.profileType.label() }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# Déconnexion #}
+    <section class="pt-md">
+        <form method="post" action="{{ path('app_logout') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+            <button type="submit"
+                    class="w-full flex items-center justify-center gap-xs py-md border border-error text-error rounded-xl text-subtitle hover:bg-error-container transition-colors active:scale-[0.98]">
+                <span class="material-symbols-outlined">logout</span>
+                Se déconnecter
+            </button>
+        </form>
+    </section>
+
+</div>
+{% endblock %}
