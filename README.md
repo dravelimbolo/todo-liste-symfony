@@ -1,5 +1,9 @@
 # Todo Liste Symfony
 
+[![CI](https://github.com/dravelimbolo/todo-liste-symfony/actions/workflows/ci.yml/badge.svg)](https://github.com/dravelimbolo/todo-liste-symfony/actions/workflows/ci.yml)
+[![Deploy](https://github.com/dravelimbolo/todo-liste-symfony/actions/workflows/deploy.yml/badge.svg)](https://github.com/dravelimbolo/todo-liste-symfony/actions/workflows/deploy.yml)
+[![codecov](https://codecov.io/gh/dravelimbolo/todo-liste-symfony/branch/main/graph/badge.svg)](https://codecov.io/gh/dravelimbolo/todo-liste-symfony)
+
 ## Structure du Projet
 
 todo-liste-symfony/
