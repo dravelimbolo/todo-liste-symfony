@@ -1,0 +1,66 @@
+{% extends 'layout/app.html.twig' %}
+{% block title %}Mes Tâches - Todo Liste Productive{% endblock %}
+
+{% block main %}
+<div class="max-w-md mx-auto px-safe-margin pt-lg space-y-lg">
+
+    <div class="flex justify-between items-center">
+        <h2 class="text-display-title text-on-surface">Mes Tâches</h2>
+        <a href="{{ path('app_task_new') }}"
+           class="flex items-center gap-xs px-md py-sm bg-primary text-on-primary rounded-full text-label-caps shadow-sm hover:brightness-110 transition-all">
+            <span class="material-symbols-outlined" style="font-size:18px">add</span>
+            Nouvelle
+        </a>
+    </div>
+
+    {% if tasks is empty %}
+        <div class="text-center py-xl text-on-surface-variant">
+            <span class="material-symbols-outlined text-5xl mb-md block opacity-30">inbox</span>
+            <p class="text-subtitle">Aucune tâche pour l'instant</p>
+            <a href="{{ path('app_task_new') }}" class="text-primary font-semibold hover:underline mt-xs inline-block">
+                Créer ma première tâche
+            </a>
+        </div>
+    {% else %}
+        <div class="space-y-md">
+            {% for task in tasks %}
+                <a href="{{ path('app_task_show', {id: task.id}) }}"
+                   class="block bg-surface-container-lowest rounded-xl p-md border border-outline-variant elevation-1 hover:bg-surface-container-low group">
+                    <div class="flex items-start justify-between gap-sm">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-subtitle text-on-surface group-hover:text-primary transition-colors truncate">
+                                {{ task.title }}
+                            </p>
+                            {% if task.description %}
+                                <p class="text-helper-text text-on-surface-variant mt-base line-clamp-1">
+                                    {{ task.description }}
+                                </p>
+                            {% endif %}
+                            {% if task.dueDate %}
+                                <p class="text-helper-text text-on-surface-variant mt-xs flex items-center gap-xs">
+                                    <span class="material-symbols-outlined" style="font-size:12px">calendar_today</span>
+                                    {{ task.dueDate|date('d/m/Y') }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-col items-end gap-xs shrink-0">
+                            <span class="text-label-caps px-sm py-0.5 rounded-full {{ task.priority.badgeClasses() }}">
+                                {{ task.priority.label() }}
+                            </span>
+                            <span class="text-label-caps px-sm py-0.5 rounded-full {{ task.status.badgeClasses() }}">
+                                {{ task.status.label() }}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
+
+<a href="{{ path('app_task_new') }}"
+   class="fixed bottom-[88px] right-md w-14 h-14 bg-secondary-container text-on-secondary-container rounded-2xl shadow-lg flex items-center justify-center hover:scale-105 active:scale-90 transition-transform z-50">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 0,'wght' 600">add</span>
+</a>
+{% endblock %}
