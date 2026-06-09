@@ -85,13 +85,17 @@ final class TaskService
         $safeFilename = $this->slugger->slug($originalName)->lower()->toString();
         $newFilename = $safeFilename.'-'.uniqid('', true).'.'.$file->guessExtension();
 
+        $mimeType = $file->getMimeType() ?? 'application/octet-stream';
+        $size = $file->getSize();
+        $clientName = $file->getClientOriginalName();
+
         $file->move($this->uploadDir, $newFilename);
 
         $attachment = new Attachment();
         $attachment->setFilename($newFilename);
-        $attachment->setOriginalName($file->getClientOriginalName());
-        $attachment->setMimeType($file->getMimeType() ?? 'application/octet-stream');
-        $attachment->setSize($file->getSize());
+        $attachment->setOriginalName($clientName);
+        $attachment->setMimeType($mimeType);
+        $attachment->setSize($size);
 
         return $attachment;
     }
