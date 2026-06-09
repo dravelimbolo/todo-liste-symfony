@@ -4,8 +4,8 @@
 
 | Branche | Rôle |
 |---------|------|
-| `main` | Production — merge squash depuis `develop` uniquement |
-| `develop` | Intégration — cible par défaut des PR |
+| `main` | Production, merge squash depuis `develop` uniquement |
+| `develop` | Intégration, cible par défaut des PR |
 | `feature/<slug>` | Nouvelle fonctionnalité (`feature/task-attachments`) |
 | `fix/<slug>` | Correction de bug (`fix/csrf-token-session`) |
 | `docs/<slug>` | Documentation (`docs/adr-soft-delete`) |
@@ -60,7 +60,7 @@ docs: rédiger ADR pour UUID binaire #10
    gh pr create --base develop
    ```
 
-4. **Merge squash** après validation CI — la branche est supprimée automatiquement.
+4. **Merge squash** après validation CI, la branche est supprimée automatiquement.
 
 ## Standards de code
 
@@ -74,8 +74,8 @@ docs: rédiger ADR pour UUID binaire #10
 ## Tests
 
 - Couverture minimale : **70 %** sur les services
-- Tests unitaires dans `tests/Unit/Service/` — pas de base de données (mocks PHPUnit)
-- Tests fonctionnels dans `tests/Functional/Controller/` — base de données `todo_liste_test`
+- Tests unitaires dans `tests/Unit/Service/` : pas de base de données (mocks PHPUnit)
+- Tests fonctionnels dans `tests/Functional/Controller/` : base de données `todo_liste_test`
 - Chaque test crée ses propres fixtures et nettoie via `tearDown()`
 
 ## Variables d'environnement
