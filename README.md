@@ -30,7 +30,7 @@ _Une application de gestion de tâches avec authentification, priorités, statut
 
 <div align="center">
 
-_Gérez vos tâches par priorité et statut, assignez-les à des membres de votre équipe et suivez leur avancement — le tout avec un système d'authentification complet et une couverture de tests robuste._
+_Gérez vos tâches par priorité et statut, assignez-les à des membres de votre équipe et suivez leur avancement, avec un système d'authentification complet et une couverture de tests robuste._
 
 </div>
 
@@ -109,7 +109,7 @@ _Gérez vos tâches par priorité et statut, assignez-les à des membres de votr
 </tr>
 <tr>
   <td style="padding:8px 12px;"><code>src/Entity/</code></td>
-  <td style="padding:8px 12px;"><code>User</code> · <code>Task</code> · <code>Attachment</code> — UUID BINARY(16), soft delete sur Task</td>
+  <td style="padding:8px 12px;"><code>User</code> · <code>Task</code> · <code>Attachment</code> : UUID BINARY(16), soft delete sur Task</td>
 </tr>
 <tr>
   <td style="padding:8px 12px;"><code>src/Service/</code></td>
