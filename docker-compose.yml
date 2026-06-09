@@ -9,6 +9,8 @@ services:
       - symfony_var:/var/www/html/var
     environment:
       APP_ENV: dev
+      DATABASE_URL: "mysql://symfony:symfony@database:3306/todo_liste?serverVersion=8.0&charset=utf8mb4"
+      MAILER_DSN: "smtp://mailpit:1025"
     depends_on:
       database:
         condition: service_healthy
