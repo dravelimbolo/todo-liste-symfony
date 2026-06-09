@@ -21,7 +21,7 @@ security:
             logout:
                 path: app_logout
                 target: app_login
-                csrf_token_generator: security.csrf.token_manager
+                enable_csrf: true
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800   # 7 jours

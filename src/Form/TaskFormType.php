@@ -23,6 +23,7 @@ class TaskFormType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre',
+                'empty_data' => '',
                 'attr'  => ['placeholder' => 'Titre de la tâche'],
             ])
             ->add('description', TextareaType::class, [
