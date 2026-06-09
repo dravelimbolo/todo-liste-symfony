@@ -51,9 +51,7 @@ class TaskServiceTest extends TestCase
         }
     }
 
-    // ══════════════════════════════════════════════════════════
     // create()
-    // ══════════════════════════════════════════════════════════
 
     public function testCreateReturnsTaskInstance(): void
     {
@@ -231,9 +229,7 @@ class TaskServiceTest extends TestCase
         $this->assertNull($task->getAssignedTo());
     }
 
-    // ══════════════════════════════════════════════════════════
     // update()
-    // ══════════════════════════════════════════════════════════
 
     public function testUpdateChangesTitle(): void
     {
@@ -315,9 +311,7 @@ class TaskServiceTest extends TestCase
         $this->assertSame($task, $result);
     }
 
-    // ══════════════════════════════════════════════════════════
     // delete() — Soft Delete
-    // ══════════════════════════════════════════════════════════
 
     public function testDeleteSetsDeletedAt(): void
     {
@@ -376,9 +370,7 @@ class TaskServiceTest extends TestCase
         $this->assertLessThanOrEqual($after->getTimestamp(), $deletedAt->getTimestamp());
     }
 
-    // ══════════════════════════════════════════════════════════
     // Helpers privés
-    // ══════════════════════════════════════════════════════════
 
     private function buildDTO(string $title): CreateTaskDTO
     {
