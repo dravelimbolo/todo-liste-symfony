@@ -11,6 +11,7 @@ use App\Enum\TaskPriority;
 use App\Enum\TaskStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\DomCrawler\Form as DomForm;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -340,8 +341,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertResponseRedirects('/taches');
 
         $this->em->clear();
-        $taskInDb = $this->em->getRepository(Task::class)->find($taskId);
-        $this->assertNotNull($taskInDb?->getDeletedAt(), 'Token valide → deletedAt doit être défini');
+        $taskInDb = $this->em->find(Task::class, $taskId);
+        $this->assertInstanceOf(Task::class, $taskInDb);
+        $this->assertNotNull($taskInDb->getDeletedAt(), 'Token valide → deletedAt doit être défini');
     }
 
     public function testSoftDeletedTaskNotVisibleInList(): void
@@ -407,7 +409,7 @@ class TaskControllerTest extends WebTestCase
      * Retrouve le nom complet d'un champ de formulaire Symfony depuis sa clé partielle.
      * Ex: 'title' → 'task_form[title]'
      */
-    private function fieldName(object $form, string $key): string
+    private function fieldName(DomForm $form, string $key): string
     {
         foreach (array_keys($form->getValues()) as $name) {
             if (str_contains((string) $name, "[{$key}]")) {

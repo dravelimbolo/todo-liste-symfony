@@ -1,8 +1,13 @@
 parameters:
-    level: 6
+    level: 8
+    treatPhpDocTypesAsCertain: false
+    excludePaths:
+        - tests/bootstrap.php
     paths:
         - bin/
         - config/
         - public/
         - src/
         - tests/
+    symfony:
+        containerXmlPath: var/cache/test/App_KernelTestDebugContainer.xml

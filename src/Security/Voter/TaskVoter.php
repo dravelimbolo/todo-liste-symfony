@@ -16,8 +16,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  * VIEW   : créateur OU assigné
  * EDIT   : créateur uniquement
  * DELETE : créateur uniquement
+ *
+ * @extends Voter<string, Task>
  */
-
 final class TaskVoter extends Voter
 {
     public const VIEW   = 'task.view';

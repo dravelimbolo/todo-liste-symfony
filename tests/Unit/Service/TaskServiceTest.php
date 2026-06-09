@@ -368,10 +368,12 @@ class TaskServiceTest extends TestCase
 
         $this->taskService->delete($task);
 
-        $after = new \DateTimeImmutable();
+        $after     = new \DateTimeImmutable();
+        $deletedAt = $task->getDeletedAt();
 
-        $this->assertGreaterThanOrEqual($before->getTimestamp(), $task->getDeletedAt()->getTimestamp());
-        $this->assertLessThanOrEqual($after->getTimestamp(), $task->getDeletedAt()->getTimestamp());
+        $this->assertNotNull($deletedAt, 'softDelete() doit définir deletedAt');
+        $this->assertGreaterThanOrEqual($before->getTimestamp(), $deletedAt->getTimestamp());
+        $this->assertLessThanOrEqual($after->getTimestamp(), $deletedAt->getTimestamp());
     }
 
     // ══════════════════════════════════════════════════════════

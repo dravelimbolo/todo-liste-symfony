@@ -31,7 +31,7 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /** @return Task[] */
+    /** @return list<Task> */
     public function findRecentByUser(User $user, int $limit = 5): array
     {
         return $this->createActiveQB()
