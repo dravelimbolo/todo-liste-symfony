@@ -169,8 +169,8 @@ class TaskControllerTest extends WebTestCase
 
         $this->client->submit($form);
 
-        // Reste sur la même page (validation échoue → pas de redirection)
-        $this->assertResponseIsSuccessful();
+        // Symfony 7 retourne 422 quand la validation du formulaire échoue
+        $this->assertResponseStatusCodeSame(422);
         $this->assertSelectorExists('input[name*="[title]"]');
     }
 
@@ -211,7 +211,7 @@ class TaskControllerTest extends WebTestCase
         $this->client->request('GET', '/taches/' . $task->getId());
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('body', 'Urgente');
+        $this->assertSelectorTextContains('body', 'URGENTE');
     }
 
     public function testTaskShowDisplaysStatusBadge(): void
@@ -330,10 +330,8 @@ class TaskControllerTest extends WebTestCase
         $taskId = $task->getId()->toString();
         $this->client->loginUser($user);
 
-        $csrfToken = static::getContainer()
-            ->get('security.csrf.token_manager')
-            ->getToken('delete' . $taskId)
-            ->getValue();
+        $crawler   = $this->client->request('GET', '/taches/' . $taskId);
+        $csrfToken = $crawler->filter('input[name="_token"]')->attr('value');
 
         $this->client->request('POST', '/taches/' . $taskId . '/supprimer', [
             '_token' => $csrfToken,

@@ -10,6 +10,7 @@ use App\Enum\TaskStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 
 /** @extends ServiceEntityRepository<Task> */
 class TaskRepository extends ServiceEntityRepository
@@ -24,7 +25,7 @@ class TaskRepository extends ServiceEntityRepository
     {
         return $this->createActiveQB()
             ->andWhere('t.createdBy = :user OR t.assignedTo = :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $user->getId(), UuidType::NAME)
             ->orderBy('t.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
@@ -35,7 +36,7 @@ class TaskRepository extends ServiceEntityRepository
     {
         return $this->createActiveQB()
             ->andWhere('t.createdBy = :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $user->getId(), UuidType::NAME)
             ->orderBy('t.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -47,7 +48,7 @@ class TaskRepository extends ServiceEntityRepository
         return (int) $this->createActiveQB()
             ->select('COUNT(t.id)')
             ->andWhere('t.createdBy = :user')
-            ->setParameter('user', $user)
+            ->setParameter('user', $user->getId(), UuidType::NAME)
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -58,7 +59,7 @@ class TaskRepository extends ServiceEntityRepository
             ->select('COUNT(t.id)')
             ->andWhere('t.createdBy = :user')
             ->andWhere('t.status = :status')
-            ->setParameter('user', $user)
+            ->setParameter('user', $user->getId(), UuidType::NAME)
             ->setParameter('status', TaskStatus::DONE->value)
             ->getQuery()
             ->getSingleScalarResult();
@@ -73,7 +74,7 @@ class TaskRepository extends ServiceEntityRepository
                 ->select('COUNT(t.id)')
                 ->andWhere('t.createdBy = :user')
                 ->andWhere('t.status = :status')
-                ->setParameter('user', $user)
+                ->setParameter('user', $user->getId(), UuidType::NAME)
                 ->setParameter('status', $status->value)
                 ->getQuery()
                 ->getSingleScalarResult();
