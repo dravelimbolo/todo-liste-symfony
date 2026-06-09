@@ -38,20 +38,21 @@ final class CreateTaskDTO
             maxSizeMessage: 'La pièce jointe est trop volumineuse (max {{ limit }}).',
             mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
             mimeTypesMessage: 'Seules les images sont acceptées (JPG, PNG, WebP, GIF).'
-        )
+        ),
     ])]
     public array $attachments = [];
 
     /** Hydrate depuis une entité existante pour la page d'édition */
     public static function fromTask(Task $task): self
     {
-        $dto              = new self();
-        $dto->title       = $task->getTitle();
+        $dto = new self();
+        $dto->title = $task->getTitle();
         $dto->description = $task->getDescription();
-        $dto->priority    = $task->getPriority();
-        $dto->status      = $task->getStatus();
-        $dto->dueDate     = $task->getDueDate();
+        $dto->priority = $task->getPriority();
+        $dto->status = $task->getStatus();
+        $dto->dueDate = $task->getDueDate();
         $dto->assignedToId = $task->getAssignedTo()?->getId()->toString();
+
         return $dto;
     }
 }

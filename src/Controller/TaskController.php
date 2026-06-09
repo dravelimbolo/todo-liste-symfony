@@ -34,13 +34,13 @@ class TaskController extends AbstractController
     #[Route('/nouvelle', name: 'app_task_new', methods: ['GET', 'POST'])]
     public function new(Request $request, TaskService $taskService): Response
     {
-        $dto  = new CreateTaskDTO();
+        $dto = new CreateTaskDTO();
         $form = $this->createForm(TaskFormType::class, $dto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Les fichiers ne sont pas mappés automatiquement (mapped: false)
-            $uploadedFiles    = $form->get('attachments')->getData();
+            $uploadedFiles = $form->get('attachments')->getData();
             $dto->attachments = is_array($uploadedFiles) ? $uploadedFiles : [];
 
             /** @var \App\Entity\User $user */
@@ -48,6 +48,7 @@ class TaskController extends AbstractController
             $task = $taskService->create($dto, $user);
 
             $this->addFlash('success', 'Tâche créée avec succès !');
+
             return $this->redirectToRoute('app_task_show', ['id' => $task->getId()]);
         }
 
@@ -71,22 +72,23 @@ class TaskController extends AbstractController
     {
         $this->denyAccessUnlessGranted(TaskVoter::EDIT, $task);
 
-        $dto  = CreateTaskDTO::fromTask($task);
+        $dto = CreateTaskDTO::fromTask($task);
         $form = $this->createForm(TaskFormType::class, $dto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFiles    = $form->get('attachments')->getData();
+            $uploadedFiles = $form->get('attachments')->getData();
             $dto->attachments = is_array($uploadedFiles) ? $uploadedFiles : [];
 
             $taskService->update($task, $dto);
 
             $this->addFlash('success', 'Tâche mise à jour !');
+
             return $this->redirectToRoute('app_task_show', ['id' => $task->getId()]);
         }
 
         return $this->render('task/edit.html.twig', [
-            'task'     => $task,
+            'task' => $task,
             'taskForm' => $form,
         ]);
     }
@@ -96,7 +98,7 @@ class TaskController extends AbstractController
     {
         $this->denyAccessUnlessGranted(TaskVoter::DELETE, $task);
 
-        if ($this->isCsrfTokenValid('delete' . $task->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->getPayload()->getString('_token'))) {
             $taskService->delete($task);
             $this->addFlash('success', 'Tâche supprimée.');
         }

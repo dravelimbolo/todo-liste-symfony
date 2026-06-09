@@ -13,10 +13,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 final class AuthService
 {
     public function __construct(
-        private readonly EntityManagerInterface      $em,
+        private readonly EntityManagerInterface $em,
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly UserRepository              $userRepository,
-    ) {}
+        private readonly UserRepository $userRepository,
+    ) {
+    }
 
     /**
      * Inscription d'un nouvel utilisateur.

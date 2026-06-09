@@ -11,19 +11,19 @@ use App\Enum\TaskPriority;
 use App\Enum\TaskStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\DomCrawler\Form as DomForm;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Form as DomForm;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TaskControllerTest extends WebTestCase
 {
-    private KernelBrowser          $client;
+    private KernelBrowser $client;
     private EntityManagerInterface $em;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
-        $this->em     = static::getContainer()->get(EntityManagerInterface::class);
+        $this->em = static::getContainer()->get(EntityManagerInterface::class);
     }
 
     protected function tearDown(): void
@@ -64,7 +64,7 @@ class TaskControllerTest extends WebTestCase
         $user = $this->createTestUser('test_auth_show@example.com');
         $task = $this->createTestTask('Tâche protégée', $user);
 
-        $this->client->request('GET', '/taches/' . $task->getId());
+        $this->client->request('GET', '/taches/'.$task->getId());
 
         $this->assertResponseRedirects('/connexion');
     }
@@ -145,11 +145,11 @@ class TaskControllerTest extends WebTestCase
         $this->client->loginUser($user);
 
         $crawler = $this->client->request('GET', '/taches/nouvelle');
-        $form    = $crawler->selectButton('Créer la tâche')->form();
+        $form = $crawler->selectButton('Créer la tâche')->form();
 
-        $form[$this->fieldName($form, 'title')]    = 'Nouvelle tâche fonctionnelle';
+        $form[$this->fieldName($form, 'title')] = 'Nouvelle tâche fonctionnelle';
         $form[$this->fieldName($form, 'priority')] = TaskPriority::MEDIUM->value;
-        $form[$this->fieldName($form, 'status')]   = TaskStatus::TODO->value;
+        $form[$this->fieldName($form, 'status')] = TaskStatus::TODO->value;
 
         $this->client->submit($form);
 
@@ -164,7 +164,7 @@ class TaskControllerTest extends WebTestCase
         $this->client->loginUser($user);
 
         $crawler = $this->client->request('GET', '/taches/nouvelle');
-        $form    = $crawler->selectButton('Créer la tâche')->form();
+        $form = $crawler->selectButton('Créer la tâche')->form();
 
         $form[$this->fieldName($form, 'title')] = '';
 
@@ -185,7 +185,7 @@ class TaskControllerTest extends WebTestCase
         $task = $this->createTestTask('Ma tâche détail', $user);
         $this->client->loginUser($user);
 
-        $this->client->request('GET', '/taches/' . $task->getId());
+        $this->client->request('GET', '/taches/'.$task->getId());
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('body', 'Ma tâche détail');
@@ -195,10 +195,10 @@ class TaskControllerTest extends WebTestCase
     {
         $owner = $this->createTestUser('test_show_owner@example.com');
         $other = $this->createTestUser('test_show_other@example.com');
-        $task  = $this->createTestTask('Tâche privée', $owner);
+        $task = $this->createTestTask('Tâche privée', $owner);
         $this->client->loginUser($other);
 
-        $this->client->request('GET', '/taches/' . $task->getId());
+        $this->client->request('GET', '/taches/'.$task->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -209,7 +209,7 @@ class TaskControllerTest extends WebTestCase
         $task = $this->createTestTask('Tâche urgente', $user, TaskPriority::URGENT);
         $this->client->loginUser($user);
 
-        $this->client->request('GET', '/taches/' . $task->getId());
+        $this->client->request('GET', '/taches/'.$task->getId());
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('body', 'URGENTE');
@@ -221,7 +221,7 @@ class TaskControllerTest extends WebTestCase
         $task = $this->createTestTask('Tâche en cours', $user, TaskPriority::MEDIUM, TaskStatus::IN_PROGRESS);
         $this->client->loginUser($user);
 
-        $this->client->request('GET', '/taches/' . $task->getId());
+        $this->client->request('GET', '/taches/'.$task->getId());
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('body', 'En cours');
@@ -237,7 +237,7 @@ class TaskControllerTest extends WebTestCase
         $task = $this->createTestTask('Tâche à modifier', $user);
         $this->client->loginUser($user);
 
-        $this->client->request('GET', '/taches/' . $task->getId() . '/modifier');
+        $this->client->request('GET', '/taches/'.$task->getId().'/modifier');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('input[name*="[title]"]');
@@ -247,10 +247,10 @@ class TaskControllerTest extends WebTestCase
     {
         $owner = $this->createTestUser('test_edit_owner@example.com');
         $other = $this->createTestUser('test_edit_other@example.com');
-        $task  = $this->createTestTask('Tâche protégée', $owner);
+        $task = $this->createTestTask('Tâche protégée', $owner);
         $this->client->loginUser($other);
 
-        $this->client->request('GET', '/taches/' . $task->getId() . '/modifier');
+        $this->client->request('GET', '/taches/'.$task->getId().'/modifier');
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -261,7 +261,7 @@ class TaskControllerTest extends WebTestCase
         $task = $this->createTestTask('Titre pré-rempli', $user);
         $this->client->loginUser($user);
 
-        $crawler    = $this->client->request('GET', '/taches/' . $task->getId() . '/modifier');
+        $crawler = $this->client->request('GET', '/taches/'.$task->getId().'/modifier');
         $titleInput = $crawler->filter('input[name*="[title]"]');
 
         $this->assertSame('Titre pré-rempli', $titleInput->attr('value'));
@@ -277,8 +277,8 @@ class TaskControllerTest extends WebTestCase
         $task = $this->createTestTask('Titre original', $user);
         $this->client->loginUser($user);
 
-        $crawler = $this->client->request('GET', '/taches/' . $task->getId() . '/modifier');
-        $form    = $crawler->selectButton('Enregistrer les modifications')->form();
+        $crawler = $this->client->request('GET', '/taches/'.$task->getId().'/modifier');
+        $form = $crawler->selectButton('Enregistrer les modifications')->form();
 
         $form[$this->fieldName($form, 'title')] = 'Titre modifié';
 
@@ -297,10 +297,10 @@ class TaskControllerTest extends WebTestCase
     {
         $owner = $this->createTestUser('test_del_owner@example.com');
         $other = $this->createTestUser('test_del_other@example.com');
-        $task  = $this->createTestTask('Tâche protégée', $owner);
+        $task = $this->createTestTask('Tâche protégée', $owner);
         $this->client->loginUser($other);
 
-        $this->client->request('POST', '/taches/' . $task->getId() . '/supprimer', [
+        $this->client->request('POST', '/taches/'.$task->getId().'/supprimer', [
             '_token' => 'token_invalide',
         ]);
 
@@ -313,7 +313,7 @@ class TaskControllerTest extends WebTestCase
         $task = $this->createTestTask('Tâche CSRF', $user);
         $this->client->loginUser($user);
 
-        $this->client->request('POST', '/taches/' . $task->getId() . '/supprimer', [
+        $this->client->request('POST', '/taches/'.$task->getId().'/supprimer', [
             '_token' => 'token_completement_invalide',
         ]);
 
@@ -326,15 +326,15 @@ class TaskControllerTest extends WebTestCase
 
     public function testDeleteWithValidCsrfSoftDeletesTask(): void
     {
-        $user   = $this->createTestUser('test_softdel@example.com');
-        $task   = $this->createTestTask('Tâche à supprimer', $user);
+        $user = $this->createTestUser('test_softdel@example.com');
+        $task = $this->createTestTask('Tâche à supprimer', $user);
         $taskId = $task->getId()->toString();
         $this->client->loginUser($user);
 
-        $crawler   = $this->client->request('GET', '/taches/' . $taskId);
+        $crawler = $this->client->request('GET', '/taches/'.$taskId);
         $csrfToken = $crawler->filter('input[name="_token"]')->attr('value');
 
-        $this->client->request('POST', '/taches/' . $taskId . '/supprimer', [
+        $this->client->request('POST', '/taches/'.$taskId.'/supprimer', [
             '_token' => $csrfToken,
         ]);
 
@@ -384,13 +384,13 @@ class TaskControllerTest extends WebTestCase
     }
 
     private function createTestTask(
-        string       $title    = 'Tâche de test',
-        ?User        $creator  = null,
+        string $title = 'Tâche de test',
+        ?User $creator = null,
         TaskPriority $priority = TaskPriority::MEDIUM,
-        TaskStatus   $status   = TaskStatus::TODO,
+        TaskStatus $status = TaskStatus::TODO,
     ): Task {
-        if ($creator === null) {
-            $creator = $this->createTestUser('test_auto_' . uniqid() . '@example.com');
+        if (null === $creator) {
+            $creator = $this->createTestUser('test_auto_'.uniqid().'@example.com');
         }
 
         $task = new Task();
@@ -407,7 +407,7 @@ class TaskControllerTest extends WebTestCase
 
     /**
      * Retrouve le nom complet d'un champ de formulaire Symfony depuis sa clé partielle.
-     * Ex: 'title' → 'task_form[title]'
+     * Ex: 'title' → 'task_form[title]'.
      */
     private function fieldName(DomForm $form, string $key): string
     {
@@ -417,10 +417,6 @@ class TaskControllerTest extends WebTestCase
             }
         }
 
-        throw new \RuntimeException(sprintf(
-            "Champ '%s' introuvable. Champs disponibles : %s",
-            $key,
-            implode(', ', array_keys($form->getValues()))
-        ));
+        throw new \RuntimeException(sprintf("Champ '%s' introuvable. Champs disponibles : %s", $key, implode(', ', array_keys($form->getValues()))));
     }
 }

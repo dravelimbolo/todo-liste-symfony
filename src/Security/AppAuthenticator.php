@@ -15,8 +15,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 final class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -26,7 +26,8 @@ final class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function __construct(
         private readonly RouterInterface $router,
-    ) {}
+    ) {
+    }
 
     public function authenticate(Request $request): Passport
     {

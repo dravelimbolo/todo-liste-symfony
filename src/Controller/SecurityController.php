@@ -24,7 +24,7 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', [
             'last_username' => $authUtils->getLastUsername(),
-            'error'         => $authUtils->getLastAuthenticationError(),
+            'error' => $authUtils->getLastAuthenticationError(),
         ]);
     }
 
@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_dashboard');
         }
 
-        $dto  = new RegisterDTO();
+        $dto = new RegisterDTO();
         $form = $this->createForm(RegistrationFormType::class, $dto);
         $form->handleRequest($request);
 
@@ -43,6 +43,7 @@ class SecurityController extends AbstractController
             try {
                 $authService->register($dto);
                 $this->addFlash('success', 'Compte créé ! Connectez-vous.');
+
                 return $this->redirectToRoute('app_login');
             } catch (\DomainException $e) {
                 $this->addFlash('error', $e->getMessage());

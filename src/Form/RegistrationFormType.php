@@ -23,27 +23,27 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
-                'attr'  => ['placeholder' => 'Jean'],
+                'attr' => ['placeholder' => 'Jean'],
             ])
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
-                'attr'  => ['placeholder' => 'Dupont'],
+                'attr' => ['placeholder' => 'Dupont'],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
-                'attr'  => ['placeholder' => 'nom@exemple.com'],
+                'attr' => ['placeholder' => 'nom@exemple.com'],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
-                'attr'  => ['placeholder' => '••••••••', 'autocomplete' => 'new-password'],
+                'attr' => ['placeholder' => '••••••••', 'autocomplete' => 'new-password'],
             ])
             ->add('profileType', EnumType::class, [
-                'class'        => ProfileType::class,
-                'label'        => 'Type de profil',
-                'choice_label' => fn(ProfileType $p) => $p->label(),
+                'class' => ProfileType::class,
+                'label' => 'Type de profil',
+                'choice_label' => fn (ProfileType $p) => $p->label(),
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label'  => "J'accepte les conditions d'utilisation.",
+                'label' => "J'accepte les conditions d'utilisation.",
                 'mapped' => true,
             ]);
     }

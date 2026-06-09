@@ -70,83 +70,139 @@ class Task
 
     public function __construct()
     {
-        $this->id          = Uuid::v7();
-        $this->createdAt   = new \DateTimeImmutable();
-        $this->status      = TaskStatus::TODO;
-        $this->priority    = TaskPriority::MEDIUM;
+        $this->id = Uuid::v7();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->status = TaskStatus::TODO;
+        $this->priority = TaskPriority::MEDIUM;
         $this->attachments = new ArrayCollection();
     }
 
-    public function getId(): Uuid { return $this->id; }
+    public function getId(): Uuid
+    {
+        return $this->id;
+    }
 
-    public function getTitle(): string { return $this->title; }
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
 
-    public function setTitle(string $title): static { $this->title = $title; return $this; }
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
-    public function getDescription(): ?string { return $this->description; }
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
         return $this;
     }
 
-    public function getPriority(): TaskPriority { return $this->priority; }
+    public function getPriority(): TaskPriority
+    {
+        return $this->priority;
+    }
 
     public function setPriority(TaskPriority $priority): static
     {
         $this->priority = $priority;
+
         return $this;
     }
 
-    public function getStatus(): TaskStatus { return $this->status; }
+    public function getStatus(): TaskStatus
+    {
+        return $this->status;
+    }
 
     public function setStatus(TaskStatus $status): static
     {
         $this->status = $status;
+
         return $this;
     }
 
-    public function getDueDate(): ?\DateTimeImmutable { return $this->dueDate; }
+    public function getDueDate(): ?\DateTimeImmutable
+    {
+        return $this->dueDate;
+    }
 
     public function setDueDate(?\DateTimeImmutable $dueDate): static
     {
         $this->dueDate = $dueDate;
+
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable { return $this->createdAt; }
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable { return $this->updatedAt; }
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
 
     #[ORM\PreUpdate]
-    public function onPreUpdate(): void { $this->updatedAt = new \DateTimeImmutable(); }
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
 
-    public function getDeletedAt(): ?\DateTimeImmutable { return $this->deletedAt; }
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
 
     /** Soft delete — appelé uniquement par TaskService */
-    public function softDelete(): void { $this->deletedAt = new \DateTimeImmutable(); }
+    public function softDelete(): void
+    {
+        $this->deletedAt = new \DateTimeImmutable();
+    }
 
-    public function isDeleted(): bool { return $this->deletedAt !== null; }
+    public function isDeleted(): bool
+    {
+        return null !== $this->deletedAt;
+    }
 
-    public function getCreatedBy(): User { return $this->createdBy; }
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
 
     public function setCreatedBy(User $createdBy): static
     {
         $this->createdBy = $createdBy;
+
         return $this;
     }
 
-    public function getAssignedTo(): ?User { return $this->assignedTo; }
+    public function getAssignedTo(): ?User
+    {
+        return $this->assignedTo;
+    }
 
     public function setAssignedTo(?User $assignedTo): static
     {
         $this->assignedTo = $assignedTo;
+
         return $this;
     }
 
     /** @return Collection<int, Attachment> */
-    public function getAttachments(): Collection { return $this->attachments; }
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
 
     public function addAttachment(Attachment $attachment): static
     {
@@ -154,12 +210,14 @@ class Task
             $this->attachments->add($attachment);
             $attachment->setTask($this);
         }
+
         return $this;
     }
 
     public function removeAttachment(Attachment $attachment): static
     {
         $this->attachments->removeElement($attachment);
+
         return $this;
     }
 }

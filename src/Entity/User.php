@@ -63,19 +63,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->id           = Uuid::v7();
-        $this->createdAt    = new \DateTimeImmutable();
+        $this->id = Uuid::v7();
+        $this->createdAt = new \DateTimeImmutable();
         $this->createdTasks = new ArrayCollection();
         $this->assignedTasks = new ArrayCollection();
     }
 
-    public function getId(): Uuid { return $this->id; }
+    public function getId(): Uuid
+    {
+        return $this->id;
+    }
 
-    public function getEmail(): string { return $this->email; }
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -88,9 +95,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /** @return list<string> */
     public function getRoles(): array
     {
-        $roles   = $this->roles;
+        $roles = $this->roles;
         $roles[] = 'ROLE_USER';
         $roles[] = $this->profileType->role();
+
         return array_values(array_unique($roles));
     }
 
@@ -98,32 +106,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
+
         return $this;
     }
 
-    public function getPassword(): string { return $this->password; }
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
 
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
         return $this;
     }
 
-    public function eraseCredentials(): void {}
+    public function eraseCredentials(): void
+    {
+    }
 
-    public function getFirstName(): string { return $this->firstName; }
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
 
     public function setFirstName(string $firstName): static
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
-    public function getLastName(): string { return $this->lastName; }
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
 
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -136,21 +159,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getInitials(): string
     {
         return strtoupper(
-            mb_substr($this->firstName, 0, 1) . mb_substr($this->lastName, 0, 1)
+            mb_substr($this->firstName, 0, 1).mb_substr($this->lastName, 0, 1)
         );
     }
 
-    public function getProfileType(): ProfileType { return $this->profileType; }
+    public function getProfileType(): ProfileType
+    {
+        return $this->profileType;
+    }
 
     public function setProfileType(ProfileType $profileType): static
     {
         $this->profileType = $profileType;
+
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable { return $this->createdAt; }
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable { return $this->updatedAt; }
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
 
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
@@ -159,8 +192,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /** @return Collection<int, Task> */
-    public function getCreatedTasks(): Collection { return $this->createdTasks; }
+    public function getCreatedTasks(): Collection
+    {
+        return $this->createdTasks;
+    }
 
     /** @return Collection<int, Task> */
-    public function getAssignedTasks(): Collection { return $this->assignedTasks; }
+    public function getAssignedTasks(): Collection
+    {
+        return $this->assignedTasks;
+    }
 }

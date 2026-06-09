@@ -23,10 +23,11 @@ final class UpdateProfileDTO
 
     public static function fromUser(User $user): self
     {
-        $dto              = new self();
-        $dto->firstName   = $user->getFirstName();
-        $dto->lastName    = $user->getLastName();
+        $dto = new self();
+        $dto->firstName = $user->getFirstName();
+        $dto->lastName = $user->getLastName();
         $dto->profileType = $user->getProfileType();
+
         return $dto;
     }
 }

@@ -16,28 +16,28 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AuthServiceTest extends TestCase
 {
-    private EntityManagerInterface&MockObject      $em;
+    private EntityManagerInterface&MockObject $em;
     private UserPasswordHasherInterface&MockObject $hasher;
-    private UserRepository&MockObject              $userRepository;
+    private UserRepository&MockObject $userRepository;
     private AuthService $authService;
 
     protected function setUp(): void
     {
-        $this->em             = $this->createMock(EntityManagerInterface::class);
-        $this->hasher         = $this->createMock(UserPasswordHasherInterface::class);
+        $this->em = $this->createMock(EntityManagerInterface::class);
+        $this->hasher = $this->createMock(UserPasswordHasherInterface::class);
         $this->userRepository = $this->createMock(UserRepository::class);
-        $this->authService    = new AuthService($this->em, $this->hasher, $this->userRepository);
+        $this->authService = new AuthService($this->em, $this->hasher, $this->userRepository);
     }
 
     public function testRegisterCreatesUserSuccessfully(): void
     {
-        $dto              = new RegisterDTO();
-        $dto->firstName   = 'Marie';
-        $dto->lastName    = 'Curie';
-        $dto->email       = 'marie@example.com';
+        $dto = new RegisterDTO();
+        $dto->firstName = 'Marie';
+        $dto->lastName = 'Curie';
+        $dto->email = 'marie@example.com';
         $dto->plainPassword = 'SecurePass1!';
         $dto->profileType = ProfileType::SOLO;
-        $dto->agreeTerms  = true;
+        $dto->agreeTerms = true;
 
         $this->userRepository->method('emailExists')->willReturn(false);
         $this->hasher->method('hashPassword')->willReturn('hashed_password');
@@ -53,7 +53,7 @@ class AuthServiceTest extends TestCase
 
     public function testRegisterThrowsExceptionWhenEmailExists(): void
     {
-        $dto        = new RegisterDTO();
+        $dto = new RegisterDTO();
         $dto->email = 'existing@example.com';
 
         $this->userRepository->method('emailExists')->willReturn(true);

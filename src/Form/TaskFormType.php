@@ -25,35 +25,35 @@ class TaskFormType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'Titre',
                 'empty_data' => '',
-                'attr'  => ['placeholder' => 'Titre de la tâche'],
+                'attr' => ['placeholder' => 'Titre de la tâche'],
             ])
             ->add('description', TextareaType::class, [
-                'label'    => 'Description',
+                'label' => 'Description',
                 'required' => false,
-                'attr'     => ['rows' => 4, 'placeholder' => 'Description détaillée...'],
+                'attr' => ['rows' => 4, 'placeholder' => 'Description détaillée...'],
             ])
             ->add('priority', EnumType::class, [
-                'class'        => TaskPriority::class,
-                'label'        => 'Priorité',
-                'choice_label' => fn(TaskPriority $p) => $p->label(),
+                'class' => TaskPriority::class,
+                'label' => 'Priorité',
+                'choice_label' => fn (TaskPriority $p) => $p->label(),
             ])
             ->add('status', EnumType::class, [
-                'class'        => TaskStatus::class,
-                'label'        => 'Statut',
-                'choice_label' => fn(TaskStatus $s) => $s->label(),
+                'class' => TaskStatus::class,
+                'label' => 'Statut',
+                'choice_label' => fn (TaskStatus $s) => $s->label(),
             ])
             ->add('dueDate', DateType::class, [
-                'label'    => "Date d'échéance",
+                'label' => "Date d'échéance",
                 'required' => false,
-                'widget'   => 'single_text',
-                'input'    => 'datetime_immutable',
+                'widget' => 'single_text',
+                'input' => 'datetime_immutable',
             ])
             ->add('attachments', FileType::class, [
-                'label'    => 'Pièces jointes (images uniquement)',
+                'label' => 'Pièces jointes (images uniquement)',
                 'multiple' => true,
                 'required' => false,
-                'mapped'   => false,
-                'attr'     => ['accept' => 'image/*'],
+                'mapped' => false,
+                'attr' => ['accept' => 'image/*'],
             ]);
     }
 
