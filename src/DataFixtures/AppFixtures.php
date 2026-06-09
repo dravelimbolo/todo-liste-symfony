@@ -22,8 +22,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // ── Utilisateurs ─────────────────────────────────────────────
-
         $solo = new User();
         $solo->setEmail('solo@demo.fr')
              ->setFirstName('Marie')
@@ -39,8 +37,6 @@ class AppFixtures extends Fixture
              ->setProfileType(ProfileType::TEAM_LEAD)
              ->setPassword($this->passwordHasher->hashPassword($lead, 'password123'));
         $manager->persist($lead);
-
-        // ── Tâches ───────────────────────────────────────────────────
 
         $tasks = [
             [

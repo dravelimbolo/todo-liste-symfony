@@ -41,9 +41,7 @@ class TaskControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    // ══════════════════════════════════════════════════════════
     // Accès non authentifié → redirection
-    // ══════════════════════════════════════════════════════════
 
     public function testTaskIndexRequiresAuthentication(): void
     {
@@ -69,9 +67,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertResponseRedirects('/connexion');
     }
 
-    // ══════════════════════════════════════════════════════════
     // Liste des tâches
-    // ══════════════════════════════════════════════════════════
 
     public function testTaskIndexLoadsForAuthenticatedUser(): void
     {
@@ -119,9 +115,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorTextContains('body', 'Aucune tâche');
     }
 
-    // ══════════════════════════════════════════════════════════
     // Formulaire de création (GET)
-    // ══════════════════════════════════════════════════════════
 
     public function testNewTaskFormLoads(): void
     {
@@ -135,9 +129,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorExists('button[type="submit"]');
     }
 
-    // ══════════════════════════════════════════════════════════
     // Création (POST)
-    // ══════════════════════════════════════════════════════════
 
     public function testNewTaskSubmitRedirectsOnSuccess(): void
     {
@@ -175,9 +167,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorExists('input[name*="[title]"]');
     }
 
-    // ══════════════════════════════════════════════════════════
     // Détail d'une tâche (GET)
-    // ══════════════════════════════════════════════════════════
 
     public function testTaskShowLoadsForOwner(): void
     {
@@ -227,9 +217,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorTextContains('body', 'En cours');
     }
 
-    // ══════════════════════════════════════════════════════════
     // Formulaire d'édition (GET)
-    // ══════════════════════════════════════════════════════════
 
     public function testEditFormLoadsForOwner(): void
     {
@@ -267,9 +255,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSame('Titre pré-rempli', $titleInput->attr('value'));
     }
 
-    // ══════════════════════════════════════════════════════════
     // Modification (POST)
-    // ══════════════════════════════════════════════════════════
 
     public function testEditTaskUpdatesTitle(): void
     {
@@ -289,9 +275,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorTextContains('body', 'Titre modifié');
     }
 
-    // ══════════════════════════════════════════════════════════
     // Suppression (Soft Delete)
-    // ══════════════════════════════════════════════════════════
 
     public function testDeleteForbiddenForNonOwner(): void
     {
@@ -361,9 +345,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorTextNotContains('body', 'Tâche soft-deletée');
     }
 
-    // ══════════════════════════════════════════════════════════
     // Helpers privés
-    // ══════════════════════════════════════════════════════════
 
     private function createTestUser(string $email): User
     {
