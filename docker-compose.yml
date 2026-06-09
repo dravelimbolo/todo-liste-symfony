@@ -1,13 +1,12 @@
-version: '3.8'
-
 services:
   php:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+    command: sh -c "mkdir -p var/cache var/log && chown -R www-data:www-data var/ && php-fpm"
     volumes:
       - .:/var/www/html
-      - /var/www/html/var
+      - symfony_var:/var/www/html/var
     environment:
       APP_ENV: dev
     depends_on:
@@ -48,3 +47,4 @@ services:
 
 volumes:
   db_data:
+  symfony_var:
