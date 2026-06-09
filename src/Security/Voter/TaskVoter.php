@@ -21,8 +21,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 final class TaskVoter extends Voter
 {
-    public const VIEW   = 'task.view';
-    public const EDIT   = 'task.edit';
+    public const VIEW = 'task.view';
+    public const EDIT = 'task.edit';
     public const DELETE = 'task.delete';
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -46,10 +46,10 @@ final class TaskVoter extends Voter
         $task = $subject;
 
         return match ($attribute) {
-            self::VIEW   => $this->canView($task, $user),
-            self::EDIT   => $this->canEdit($task, $user),
+            self::VIEW => $this->canView($task, $user),
+            self::EDIT => $this->canEdit($task, $user),
             self::DELETE => $this->canDelete($task, $user),
-            default      => false,
+            default => false,
         };
     }
 

@@ -41,20 +41,77 @@ class Attachment
 
     public function __construct()
     {
-        $this->id         = Uuid::v7();
+        $this->id = Uuid::v7();
         $this->uploadedAt = new \DateTimeImmutable();
     }
 
-    public function getId(): Uuid { return $this->id; }
-    public function getFilename(): string { return $this->filename; }
-    public function setFilename(string $filename): static { $this->filename = $filename; return $this; }
-    public function getOriginalName(): string { return $this->originalName; }
-    public function setOriginalName(string $n): static { $this->originalName = $n; return $this; }
-    public function getMimeType(): string { return $this->mimeType; }
-    public function setMimeType(string $m): static { $this->mimeType = $m; return $this; }
-    public function getSize(): int { return $this->size; }
-    public function setSize(int $size): static { $this->size = $size; return $this; }
-    public function getUploadedAt(): \DateTimeImmutable { return $this->uploadedAt; }
-    public function getTask(): Task { return $this->task; }
-    public function setTask(Task $task): static { $this->task = $task; return $this; }
+    public function getId(): Uuid
+    {
+        return $this->id;
+    }
+
+    public function getFilename(): string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(string $filename): static
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    public function getOriginalName(): string
+    {
+        return $this->originalName;
+    }
+
+    public function setOriginalName(string $n): static
+    {
+        $this->originalName = $n;
+
+        return $this;
+    }
+
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
+    }
+
+    public function setMimeType(string $m): static
+    {
+        $this->mimeType = $m;
+
+        return $this;
+    }
+
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getUploadedAt(): \DateTimeImmutable
+    {
+        return $this->uploadedAt;
+    }
+
+    public function getTask(): Task
+    {
+        return $this->task;
+    }
+
+    public function setTask(Task $task): static
+    {
+        $this->task = $task;
+
+        return $this;
+    }
 }

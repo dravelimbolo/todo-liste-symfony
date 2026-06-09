@@ -17,7 +17,7 @@ class DashboardServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->taskRepository   = $this->createMock(TaskRepository::class);
+        $this->taskRepository = $this->createMock(TaskRepository::class);
         $this->dashboardService = new DashboardService($this->taskRepository);
     }
 

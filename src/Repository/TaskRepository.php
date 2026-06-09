@@ -79,6 +79,7 @@ class TaskRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
         }
+
         return $result;
     }
 

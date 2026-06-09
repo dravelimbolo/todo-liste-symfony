@@ -11,7 +11,8 @@ final class DashboardService
 {
     public function __construct(
         private readonly TaskRepository $taskRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * Calcule toutes les statistiques du dashboard pour un utilisateur.
@@ -26,21 +27,21 @@ final class DashboardService
      */
     public function getStats(User $user): array
     {
-        $totalCreated   = $this->taskRepository->countCreatedByUser($user);
+        $totalCreated = $this->taskRepository->countCreatedByUser($user);
         $totalCompleted = $this->taskRepository->countCompletedByUser($user);
-        $byStatus       = $this->taskRepository->countByStatusForUser($user);
-        $recentTasks    = $this->taskRepository->findRecentByUser($user, 5);
+        $byStatus = $this->taskRepository->countByStatusForUser($user);
+        $recentTasks = $this->taskRepository->findRecentByUser($user, 5);
 
         $completionRate = $totalCreated > 0
             ? (int) round(($totalCompleted / $totalCreated) * 100)
             : 0;
 
         return [
-            'totalCreated'   => $totalCreated,
+            'totalCreated' => $totalCreated,
             'totalCompleted' => $totalCompleted,
             'completionRate' => $completionRate,
-            'byStatus'       => $byStatus,
-            'recentTasks'    => $recentTasks,
+            'byStatus' => $byStatus,
+            'recentTasks' => $recentTasks,
         ];
     }
 }

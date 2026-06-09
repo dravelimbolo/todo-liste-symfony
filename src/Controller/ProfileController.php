@@ -28,7 +28,7 @@ class ProfileController extends AbstractController
         $user = $this->getUser();
 
         return $this->render('profile/show.html.twig', [
-            'user'  => $user,
+            'user' => $user,
             'stats' => $dashboardService->getStats($user),
         ]);
     }
@@ -39,18 +39,19 @@ class ProfileController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        $dto  = UpdateProfileDTO::fromUser($user);
+        $dto = UpdateProfileDTO::fromUser($user);
         $form = $this->createForm(ProfileFormType::class, $dto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userService->updateProfile($user, $dto);
             $this->addFlash('success', 'Profil mis à jour !');
+
             return $this->redirectToRoute('app_profile');
         }
 
         return $this->render('profile/edit.html.twig', [
-            'user'        => $user,
+            'user' => $user,
             'profileForm' => $form,
         ]);
     }
@@ -61,7 +62,7 @@ class ProfileController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        $dto  = new ChangePasswordDTO();
+        $dto = new ChangePasswordDTO();
         $form = $this->createForm(ChangePasswordFormType::class, $dto);
         $form->handleRequest($request);
 
@@ -69,6 +70,7 @@ class ProfileController extends AbstractController
             try {
                 $authService->changePassword($user, $dto->currentPassword, $dto->newPassword);
                 $this->addFlash('success', 'Mot de passe changé avec succès !');
+
                 return $this->redirectToRoute('app_profile');
             } catch (\DomainException $e) {
                 $this->addFlash('error', $e->getMessage());
@@ -77,7 +79,7 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/change_password.html.twig', [
             'changePasswordForm' => $form,
-            'user'               => $user,
+            'user' => $user,
         ]);
     }
 }

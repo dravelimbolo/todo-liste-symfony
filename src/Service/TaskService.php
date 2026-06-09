@@ -17,10 +17,11 @@ final class TaskService
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly UserRepository         $userRepository,
-        private readonly SluggerInterface       $slugger,
-        private readonly string                 $uploadDir,
-    ) {}
+        private readonly UserRepository $userRepository,
+        private readonly SluggerInterface $slugger,
+        private readonly string $uploadDir,
+    ) {
+    }
 
     /** Crée une nouvelle tâche pour le créateur donné. */
     public function create(CreateTaskDTO $dto, User $creator): Task
@@ -40,6 +41,7 @@ final class TaskService
     {
         $this->hydrateFromDTO($task, $dto);
         $this->em->flush();
+
         return $task;
     }
 
@@ -81,7 +83,7 @@ final class TaskService
     {
         $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalName)->lower()->toString();
-        $newFilename  = $safeFilename . '-' . uniqid('', true) . '.' . $file->guessExtension();
+        $newFilename = $safeFilename.'-'.uniqid('', true).'.'.$file->guessExtension();
 
         $file->move($this->uploadDir, $newFilename);
 

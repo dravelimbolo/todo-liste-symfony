@@ -19,15 +19,15 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class TaskServiceTest extends TestCase
 {
     private EntityManagerInterface&MockObject $em;
-    private UserRepository&MockObject         $userRepository;
-    private TaskService                        $taskService;
-    private string                             $uploadDir;
+    private UserRepository&MockObject $userRepository;
+    private TaskService $taskService;
+    private string $uploadDir;
 
     protected function setUp(): void
     {
-        $this->em             = $this->createMock(EntityManagerInterface::class);
+        $this->em = $this->createMock(EntityManagerInterface::class);
         $this->userRepository = $this->createMock(UserRepository::class);
-        $this->uploadDir      = sys_get_temp_dir() . '/task_test_' . uniqid();
+        $this->uploadDir = sys_get_temp_dir().'/task_test_'.uniqid();
 
         if (!is_dir($this->uploadDir)) {
             mkdir($this->uploadDir, 0777, true);
@@ -43,7 +43,7 @@ class TaskServiceTest extends TestCase
 
     protected function tearDown(): void
     {
-        foreach (glob($this->uploadDir . '/*') ?: [] as $file) {
+        foreach (glob($this->uploadDir.'/*') ?: [] as $file) {
             unlink($file);
         }
         if (is_dir($this->uploadDir)) {
@@ -97,7 +97,7 @@ class TaskServiceTest extends TestCase
         $this->em->method('persist');
         $this->em->method('flush');
 
-        $dto              = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->description = 'Description détaillée';
 
         $task = $this->taskService->create($dto, $this->createMock(User::class));
@@ -110,7 +110,7 @@ class TaskServiceTest extends TestCase
         $this->em->method('persist');
         $this->em->method('flush');
 
-        $dto           = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->priority = TaskPriority::URGENT;
 
         $task = $this->taskService->create($dto, $this->createMock(User::class));
@@ -123,7 +123,7 @@ class TaskServiceTest extends TestCase
         $this->em->method('persist');
         $this->em->method('flush');
 
-        $dto         = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->status = TaskStatus::IN_PROGRESS;
 
         $task = $this->taskService->create($dto, $this->createMock(User::class));
@@ -136,7 +136,7 @@ class TaskServiceTest extends TestCase
         $this->em->method('persist');
         $this->em->method('flush');
 
-        $dto          = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->dueDate = new \DateTimeImmutable('2025-12-31');
 
         $task = $this->taskService->create($dto, $this->createMock(User::class));
@@ -150,7 +150,7 @@ class TaskServiceTest extends TestCase
         $this->em->method('flush');
 
         $creator = $this->createMock(User::class);
-        $task    = $this->taskService->create($this->buildDTO('Titre'), $creator);
+        $task = $this->taskService->create($this->buildDTO('Titre'), $creator);
 
         $this->assertSame($creator, $task->getCreatedBy());
     }
@@ -210,7 +210,7 @@ class TaskServiceTest extends TestCase
         $assignedUser = $this->createMock(User::class);
         $this->userRepository->method('find')->willReturn($assignedUser);
 
-        $dto               = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->assignedToId = 'uuid-assigné';
 
         $task = $this->taskService->create($dto, $this->createMock(User::class));
@@ -223,7 +223,7 @@ class TaskServiceTest extends TestCase
         $this->em->method('persist');
         $this->em->method('flush');
 
-        $dto               = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->assignedToId = null;
 
         $task = $this->taskService->create($dto, $this->createMock(User::class));
@@ -239,7 +239,7 @@ class TaskServiceTest extends TestCase
     {
         $this->em->method('flush');
 
-        $task   = $this->buildTask('Ancien titre');
+        $task = $this->buildTask('Ancien titre');
         $result = $this->taskService->update($task, $this->buildDTO('Nouveau titre'));
 
         $this->assertSame('Nouveau titre', $result->getTitle());
@@ -249,7 +249,7 @@ class TaskServiceTest extends TestCase
     {
         $this->em->method('flush');
 
-        $dto           = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->priority = TaskPriority::HIGH;
 
         $result = $this->taskService->update($this->buildTask('Titre'), $dto);
@@ -261,7 +261,7 @@ class TaskServiceTest extends TestCase
     {
         $this->em->method('flush');
 
-        $dto         = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->status = TaskStatus::DONE;
 
         $result = $this->taskService->update($this->buildTask('Titre'), $dto);
@@ -282,7 +282,7 @@ class TaskServiceTest extends TestCase
         $this->em->method('flush');
 
         $creator = $this->createMock(User::class);
-        $task    = $this->buildTask('Titre');
+        $task = $this->buildTask('Titre');
         $task->setCreatedBy($creator);
 
         $this->taskService->update($task, $this->buildDTO('Nouveau titre'));
@@ -297,7 +297,7 @@ class TaskServiceTest extends TestCase
         $task = $this->buildTask('Titre');
         $task->setAssignedTo($this->createMock(User::class));
 
-        $dto               = $this->buildDTO('Titre');
+        $dto = $this->buildDTO('Titre');
         $dto->assignedToId = null;
 
         $this->taskService->update($task, $dto);
@@ -309,7 +309,7 @@ class TaskServiceTest extends TestCase
     {
         $this->em->method('flush');
 
-        $task   = $this->buildTask('Titre');
+        $task = $this->buildTask('Titre');
         $result = $this->taskService->update($task, $this->buildDTO('Nouveau'));
 
         $this->assertSame($task, $result);
@@ -363,12 +363,12 @@ class TaskServiceTest extends TestCase
     {
         $this->em->method('flush');
 
-        $task   = $this->buildTask('Tâche');
+        $task = $this->buildTask('Tâche');
         $before = new \DateTimeImmutable();
 
         $this->taskService->delete($task);
 
-        $after     = new \DateTimeImmutable();
+        $after = new \DateTimeImmutable();
         $deletedAt = $task->getDeletedAt();
 
         $this->assertNotNull($deletedAt, 'softDelete() doit définir deletedAt');
@@ -382,10 +382,10 @@ class TaskServiceTest extends TestCase
 
     private function buildDTO(string $title): CreateTaskDTO
     {
-        $dto              = new CreateTaskDTO();
-        $dto->title       = $title;
-        $dto->priority    = TaskPriority::MEDIUM;
-        $dto->status      = TaskStatus::TODO;
+        $dto = new CreateTaskDTO();
+        $dto->title = $title;
+        $dto->priority = TaskPriority::MEDIUM;
+        $dto->status = TaskStatus::TODO;
         $dto->attachments = [];
 
         return $dto;

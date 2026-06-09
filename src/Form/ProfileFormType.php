@@ -19,11 +19,11 @@ class ProfileFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, ['label' => 'Prénom'])
-            ->add('lastName',  TextType::class, ['label' => 'Nom'])
+            ->add('lastName', TextType::class, ['label' => 'Nom'])
             ->add('profileType', EnumType::class, [
-                'class'        => ProfileType::class,
-                'label'        => 'Type de profil',
-                'choice_label' => fn(ProfileType $p) => $p->label(),
+                'class' => ProfileType::class,
+                'label' => 'Type de profil',
+                'choice_label' => fn (ProfileType $p) => $p->label(),
             ]);
     }
 
